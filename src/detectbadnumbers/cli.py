@@ -14,9 +14,16 @@ logger = logging.getLogger(__name__)
 
 def setup_logging():
     """Configure logging based on environment variables."""
-    log_level = os.getenv("LOG_LEVEL", "INFO")
+    log_level = os.getenv("LOG_LEVEL", "WARNING")
+    
+    # Set root logger to WARNING
+    logging.getLogger().setLevel(logging.WARNING)
+    
+    # Set all our module loggers to WARNING
+    logging.getLogger("detectbadnumbers").setLevel(logging.WARNING)
+    
+    # Configure the basic format
     logging.basicConfig(
-        level=log_level,
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     )
 
@@ -32,6 +39,9 @@ def create_papers_directory():
 def main(papers_dir: str, no_cache: bool):
     """Analyze papers for impossible numbers in statistical data."""
     try:
+        # Set up logging first
+        setup_logging()
+        
         # Load environment variables with override=True
         env_path = os.path.join(os.getcwd(), '.env')
         load_dotenv(env_path, override=True)

@@ -1,0 +1,239 @@
+{
+  "sample_size": 28,
+  "tables": [],
+  "text_statistics": [
+    {
+      "context": "Performance of participants using a ball described as 'lucky' versus a 'neutral' ball in a putting task.",
+      "conditions": [
+        {
+          "name": "Superstition-activated",
+          "mean": 6.42,
+          "sd": 1.88
+        },
+        {
+          "name": "Control",
+          "mean": 4.75,
+          "sd": 2.15
+        }
+      ],
+      "test_type": "t-test",
+      "degrees_of_freedom": "26",
+      "test_statistic": 2.14,
+      "p_value": "< .05",
+      "effect_size": {
+        "type": "Cohen's d",
+        "value": 0.83
+      }
+    },
+    {
+      "context": "Time taken to complete a motor-dexterity task after exposure to different starting signals: 'I press the thumbs for you' (superstition-activated), 'I press the watch for you' (first control), or 'on 'go' you go' (second control).",
+      "conditions": [
+        {
+          "name": "Superstition activated",
+          "mean": 191.5,
+          "sd": 117.1
+        },
+        {
+          "name": "First control",
+          "mean": 319.7,
+          "sd": 223.6
+        },
+        {
+          "name": "Second control",
+          "mean": 342.3,
+          "sd": 181.8
+        }
+      ],
+      "test_type": "F-test",
+      "degrees_of_freedom": "2, 48",
+      "test_statistic": 3.16,
+      "p_value": "< .05",
+      "effect_size": null
+    },
+    {
+      "context": "Comparison of time taken to complete the motor-dexterity task between the superstition-activated condition and the first control condition.",
+      "conditions": [
+        {
+          "name": "Superstition activated",
+          "mean": 191.5,
+          "sd": 117.1
+        },
+        {
+          "name": "First control",
+          "mean": 319.7,
+          "sd": 223.6
+        }
+      ],
+      "test_type": "t-test",
+      "degrees_of_freedom": "48",
+      "test_statistic": 2.0,
+      "p_value": "< .05",
+      "effect_size": {
+        "type": "Cohen's d",
+        "value": 0.72
+      }
+    },
+    {
+      "context": "Comparison of time taken to complete the motor-dexterity task between the superstition-activated condition and the second control condition.",
+      "conditions": [
+        {
+          "name": "Superstition activated",
+          "mean": 191.5,
+          "sd": 117.1
+        },
+        {
+          "name": "Second control",
+          "mean": 342.3,
+          "sd": 181.8
+        }
+      ],
+      "test_type": "t-test",
+      "degrees_of_freedom": "48",
+      "test_statistic": 2.36,
+      "p_value": "< .03",
+      "effect_size": {
+        "type": "Cohen's d",
+        "value": 0.98
+      }
+    },
+    {
+      "context": "Performance in a memory game between participants with their lucky charm present and those without it.",
+      "conditions": [
+        {
+          "name": "Presence of lucky charm",
+          "mean": -0.27,
+          "sd": 0.67
+        },
+        {
+          "name": "Absence of lucky charm",
+          "mean": 0.28,
+          "sd": 0.97
+        }
+      ],
+      "test_type": "t-test",
+      "degrees_of_freedom": "39",
+      "test_statistic": 2.13,
+      "p_value": "< .05",
+      "effect_size": {
+        "type": "Cohen's d",
+        "value": 0.66
+      }
+    },
+    {
+      "context": "Self-efficacy levels reported by participants with their lucky charm present and those without it.",
+      "conditions": [
+        {
+          "name": "Presence of lucky charm",
+          "mean": 6.64,
+          "sd": 1.53
+        },
+        {
+          "name": "Absence of lucky charm",
+          "mean": 5.1,
+          "sd": 1.68
+        }
+      ],
+      "test_type": "t-test",
+      "degrees_of_freedom": "39",
+      "test_statistic": 3.07,
+      "p_value": "< .01",
+      "effect_size": {
+        "type": "Cohen's d",
+        "value": 0.96
+      }
+    },
+    {
+      "context": "Performance in an anagram task between participants with their lucky charm present and those without it.",
+      "conditions": [
+        {
+          "name": "Presence of lucky charm",
+          "mean": 45.84,
+          "sd": 22.17
+        },
+        {
+          "name": "Absence of lucky charm",
+          "mean": 30.56,
+          "sd": 17.05
+        }
+      ],
+      "test_type": "t-test",
+      "degrees_of_freedom": "27",
+      "test_statistic": 2.1,
+      "p_value": "< .05",
+      "effect_size": {
+        "type": "Cohen's d",
+        "value": 0.77
+      }
+    },
+    {
+      "context": "Self-efficacy levels reported by participants with their lucky charm present and those without it.",
+      "conditions": [
+        {
+          "name": "Presence of lucky charm",
+          "mean": 7.35,
+          "sd": 1.11
+        },
+        {
+          "name": "Absence of lucky charm",
+          "mean": 6.41,
+          "sd": 1.36
+        }
+      ],
+      "test_type": "t-test",
+      "degrees_of_freedom": "27",
+      "test_statistic": 2.01,
+      "p_value": "< .05",
+      "effect_size": {
+        "type": "Cohen's d",
+        "value": 0.75
+      }
+    },
+    {
+      "context": "Goals set for the anagram task by participants with their lucky charm present and those without it.",
+      "conditions": [
+        {
+          "name": "Presence of lucky charm",
+          "mean": 79.62,
+          "sd": 9.01
+        },
+        {
+          "name": "Absence of lucky charm",
+          "mean": 63.44,
+          "sd": 18.63
+        }
+      ],
+      "test_type": "t-test",
+      "degrees_of_freedom": "27",
+      "test_statistic": 2.86,
+      "p_value": "< .01",
+      "effect_size": {
+        "type": "Cohen's d",
+        "value": 1.11
+      }
+    },
+    {
+      "context": "Time spent working on the anagram task (persistence) by participants with their lucky charm present and those without it.",
+      "conditions": [
+        {
+          "name": "Presence of lucky charm",
+          "mean": 739.95,
+          "sd": 477.91
+        },
+        {
+          "name": "Absence of lucky charm",
+          "mean": 421.39,
+          "sd": 260.55
+        }
+      ],
+      "test_type": "t-test",
+      "degrees_of_freedom": "27",
+      "test_statistic": 2.16,
+      "p_value": "< .05",
+      "effect_size": {
+        "type": "Cohen's d",
+        "value": 0.83
+      }
+    }
+  ],
+  "filename": "damisch-et-al-2010-keep-your-fingers-crossed-how-superstition-improves-performance.pdf"
+}
