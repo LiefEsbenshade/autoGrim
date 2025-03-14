@@ -1,0 +1,14 @@
+{
+  "filename": "test.pdf",
+  "text_statistics": [
+    {
+      "test_type": "t-test",
+      "context": "Test comparison",
+      "sample_size": 30,
+      "reported_statistics": {
+        "test_statistic": "t(28) = 2.14",
+        "p_value": "p < .05"
+      }
+    }
+  ]
+}

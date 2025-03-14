@@ -1,3 +1,5 @@
+# This is experimental vibe coding - everything, including the readme has been vibed
+
 # Impossible Numbers Detector
 
 This project analyzes scientific papers to detect impossible numbers in reported statistics. It checks for cases where reported percentages, means, and standard deviations are mathematically impossible given the reported sample size and data ranges.
