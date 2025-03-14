@@ -2,6 +2,7 @@
 
 import os
 import pytest
+import json
 from click.testing import CliRunner
 from unittest.mock import Mock, patch
 from detectbadnumbers.cli import main, save_analysis_results
@@ -35,7 +36,7 @@ def test_main_success(cli_runner, tmp_path, mock_analyzer):
     """Test successful execution of the main CLI command."""
     papers_dir = tmp_path / "papers"
     papers_dir.mkdir()
-    output_dir = tmp_path / "output"
+    output_dir = tmp_path / "test_output"
     
     with patch("detectbadnumbers.cli.PaperAnalyzer", return_value=mock_analyzer):
         with patch("detectbadnumbers.cli.configure_llm"):
@@ -71,7 +72,7 @@ def test_main_no_cache_option(cli_runner, tmp_path, mock_analyzer):
 
 def test_save_analysis_results(tmp_path, sample_statistics):
     """Test saving analysis results to files."""
-    output_dir = tmp_path / "output"
+    output_dir = tmp_path / "test_output"
     output_dir.mkdir()
     
     txt_file, json_file = save_analysis_results(
@@ -108,7 +109,7 @@ def test_save_analysis_results_creates_dir(tmp_path, sample_statistics):
     assert os.path.exists(txt_file)
     assert os.path.exists(json_file)
 
-def test_main_with_env_file(cli_runner, tmp_path, mock_analyzer, mock_env_file):
+def test_main_with_env_file(cli_runner, tmp_path, mock_analyzer, test_env_file):
     """Test CLI with environment file."""
     papers_dir = tmp_path / "papers"
     papers_dir.mkdir()

@@ -8,6 +8,7 @@ import PyPDF2
 import json
 import re
 import logging
+from pathlib import Path
 
 # Configure logging
 logging.basicConfig(
@@ -28,12 +29,15 @@ def configure_llm() -> genai.GenerativeModel:
     """
     # Get API key from environment
     api_key = os.getenv("GOOGLE_API_KEY")
-    logger.debug(f"Loaded API key: {api_key[:5]}...")  # Only log first 5 chars for security
     if not api_key:
-        raise ValueError("GOOGLE_API_KEY environment variable not set")
-    genai.configure(api_key=api_key)
+        raise ValueError("GOOGLE_API_KEY environment variable is not set")
     
-    # Initialize and return the model
+    # Log securely (only first few chars)
+    if api_key:
+        logger.debug(f"Using API key starting with: {api_key[:5]}...")
+    
+    # Configure the model
+    genai.configure(api_key=api_key)
     return genai.GenerativeModel('gemini-1.5-pro-001')
 
 class PaperAnalyzer:
@@ -47,10 +51,12 @@ class PaperAnalyzer:
             use_cache: Whether to use cached results if available
         """
         self.model = model
-        self.cache_dir = cache_dir or os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'cache')
+        self.cache_dir = cache_dir or "cache"
         self.use_cache = use_cache
-        os.makedirs(self.cache_dir, exist_ok=True)
-        logger.info(f"Using cache directory: {self.cache_dir}")
+        
+        # Create cache directory if it doesn't exist
+        if self.use_cache:
+            os.makedirs(self.cache_dir, exist_ok=True)
         
         # Assume API is available since it was checked in cli.py
         self.api_available = True
@@ -121,31 +127,38 @@ Critical Requirements:
 
     def _get_cache_path(self, pdf_path: str) -> str:
         """Get the cache file path for a given PDF."""
-        pdf_name = os.path.basename(pdf_path)
+        pdf_name = Path(pdf_path).name
         cache_name = f"{pdf_name}.json"
         return os.path.join(self.cache_dir, cache_name)
 
     def _load_from_cache(self, pdf_path: str) -> Optional[Dict]:
         """Try to load results from cache."""
+        if not self.use_cache:
+            return None
+            
         cache_path = self._get_cache_path(pdf_path)
         if os.path.exists(cache_path):
             try:
-                with open(cache_path, 'r') as f:
+                with open(cache_path, 'r', encoding='utf-8') as f:
                     logging.info(f"Loading cached results from {cache_path}")
                     return json.load(f)
-            except Exception as e:
-                logging.warning(f"Failed to load cache from {cache_path}: {str(e)}")
+            except json.JSONDecodeError:
+                logger.warning(f"Invalid JSON in cache file: {cache_path}")
+                return None
         return None
 
     def _save_to_cache(self, pdf_path: str, results: Dict):
         """Save results to cache."""
+        if not self.use_cache:
+            return
+            
         cache_path = self._get_cache_path(pdf_path)
         try:
-            with open(cache_path, 'w') as f:
+            with open(cache_path, 'w', encoding='utf-8') as f:
                 logging.info(f"Saving results to cache: {cache_path}")
                 json.dump(results, f, indent=2)
         except Exception as e:
-            logging.warning(f"Failed to save cache to {cache_path}: {str(e)}")
+            logger.warning(f"Failed to save cache to {cache_path}: {str(e)}")
 
     def extract_text_from_pdf(self, pdf_path: str) -> str:
         """Extract text from a PDF file, focusing on actual content and skipping metadata."""

@@ -5,6 +5,8 @@ import pytest
 import json
 from unittest.mock import Mock, patch
 from detectbadnumbers.llm_extractor import PaperAnalyzer, configure_llm
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
 
 @pytest.fixture
 def mock_model():
@@ -42,16 +44,16 @@ def test_configure_llm_with_api_key():
                 mock_configure.assert_called_once_with(api_key="test_key")
                 mock_model.assert_called_once_with('gemini-1.5-pro-001')
 
-def test_paper_analyzer_init(mock_model, cache_dir):
+def test_paper_analyzer_init(mock_model, test_cache_dir):
     """Test PaperAnalyzer initialization."""
-    analyzer = PaperAnalyzer(mock_model, cache_dir=cache_dir)
+    analyzer = PaperAnalyzer(mock_model, cache_dir=test_cache_dir)
     assert analyzer.model == mock_model
-    assert analyzer.cache_dir == cache_dir
+    assert analyzer.cache_dir == test_cache_dir
     assert analyzer.use_cache is True
 
-def test_paper_analyzer_cache_handling(mock_model, cache_dir, sample_pdf_path):
+def test_paper_analyzer_cache_handling(mock_model, test_cache_dir, sample_pdf_path):
     """Test cache handling in PaperAnalyzer."""
-    analyzer = PaperAnalyzer(mock_model, cache_dir=cache_dir)
+    analyzer = PaperAnalyzer(mock_model, cache_dir=test_cache_dir)
     
     # First run - should use model
     result1 = analyzer.analyze_paper(sample_pdf_path)
@@ -63,9 +65,9 @@ def test_paper_analyzer_cache_handling(mock_model, cache_dir, sample_pdf_path):
     assert not mock_model.generate_content.called
     assert result1 == result2
 
-def test_paper_analyzer_no_cache(mock_model, cache_dir, sample_pdf_path):
+def test_paper_analyzer_no_cache(mock_model, test_cache_dir, sample_pdf_path):
     """Test PaperAnalyzer with cache disabled."""
-    analyzer = PaperAnalyzer(mock_model, cache_dir=cache_dir, use_cache=False)
+    analyzer = PaperAnalyzer(mock_model, cache_dir=test_cache_dir, use_cache=False)
     
     # First run
     analyzer.analyze_paper(sample_pdf_path)
@@ -81,10 +83,17 @@ def test_paper_analyzer_process_directory(mock_model, tmp_path):
     # Create test PDFs
     papers_dir = tmp_path / "papers"
     papers_dir.mkdir()
-    (papers_dir / "test1.pdf").write_bytes(b"%PDF-1.4\n%EOF")
-    (papers_dir / "test2.pdf").write_bytes(b"%PDF-1.4\n%EOF")
     
-    analyzer = PaperAnalyzer(mock_model, cache_dir=str(tmp_path / "cache"))
+    # Create proper PDFs with reportlab
+    for i in range(2):
+        pdf_path = papers_dir / f"test{i+1}.pdf"
+        c = canvas.Canvas(str(pdf_path), pagesize=letter)
+        c.drawString(100, 750, f"Sample statistical text for testing {i+1}.")
+        c.drawString(100, 730, "The t-test revealed significant differences (t(28) = 2.14, p < .05).")
+        c.drawString(100, 710, "Effect size was moderate (Cohen's d = 0.78).")
+        c.save()
+
+    analyzer = PaperAnalyzer(mock_model, cache_dir=str(tmp_path / "test_cache"))
     results = analyzer.process_papers_directory(str(papers_dir))
     
     assert len(results) == 2

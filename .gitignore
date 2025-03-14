@@ -38,6 +38,7 @@ wheels/
 # Project specific
 logs/
 *.log
+output/
 
 # Distribution / packaging
 .Python

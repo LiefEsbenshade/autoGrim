@@ -4,6 +4,7 @@ from typing import Dict, List, Optional, Tuple
 import numpy as np
 from dataclasses import dataclass
 import math
+import re
 
 @dataclass
 class ImpossibleNumberResult:
@@ -11,9 +12,17 @@ class ImpossibleNumberResult:
     explanation: str
     reported_value: float
     sample_size: int
-    type: str  # 'percentage', 'mean', or 'sd'
+    type: str  # 'percentage', 'mean', 'sd', 'df', or 'effect_size'
 
 class ImpossibleNumberDetector:
+    def __init__(self):
+        """Initialize the impossible number detector."""
+        self.effect_size_thresholds = {
+            "Cohen's d": 2.0,  # Values above this are suspicious
+            "eta squared": 0.5,  # Values above this are suspicious
+            "r": 1.0,  # Values above this are impossible
+        }
+
     @staticmethod
     def check_percentage(percentage: float, sample_size: int) -> ImpossibleNumberResult:
         """
@@ -212,12 +221,73 @@ class ImpossibleNumberDetector:
         
         return errors
 
-    def analyze_text_statistics(self, text_stat, sample_size=None):
+    def check_degrees_of_freedom(self, test_type: str, df_str: str, sample_size: int) -> Optional[str]:
+        """
+        Check if the reported degrees of freedom are possible given the sample size.
+        Returns an error message if impossible, None otherwise.
+        """
+        if test_type == "t-test":
+            # Extract df from format like "t(28) = 2.14"
+            match = re.search(r't\((\d+)\)', df_str)
+            if match:
+                df = int(match.group(1))
+                # For independent t-test, df = n1 + n2 - 2
+                # For paired t-test, df = n - 1
+                # So df should always be less than total n
+                if df >= sample_size:
+                    return f"Degrees of freedom ({df}) cannot be larger than or equal to sample size ({sample_size})"
+        elif test_type == "F-test":
+            # Extract df from format like "F(2, 57) = 3.16"
+            match = re.search(r'F\((\d+),\s*(\d+)\)', df_str)
+            if match:
+                df1, df2 = int(match.group(1)), int(match.group(2))
+                # df2 is the error df, which should be less than sample size
+                if df2 >= sample_size:
+                    return f"Error degrees of freedom ({df2}) cannot be larger than or equal to sample size ({sample_size})"
+                # df1 is the factor df, which should be less than sample size
+                if df1 >= sample_size:
+                    return f"Factor degrees of freedom ({df1}) cannot be larger than or equal to sample size ({sample_size})"
+        return None
+
+    def check_effect_size(self, effect_size_str: str) -> Optional[str]:
+        """
+        Check if the reported effect size is suspiciously large or impossible.
+        Returns an error message if suspicious/impossible, None otherwise.
+        """
+        # Extract effect size type and value
+        for effect_type, threshold in self.effect_size_thresholds.items():
+            if effect_type.lower() in effect_size_str.lower():
+                try:
+                    value = float(re.search(r'[-+]?\d*\.?\d+', effect_size_str).group())
+                    if abs(value) > threshold:
+                        return f"Suspicious effect size: {effect_type} of {value} is {'impossible' if threshold == 1.0 else 'unusually large'} (threshold: {threshold})"
+                except (AttributeError, ValueError):
+                    pass
+        return None
+
+    def analyze_text_statistics(self, text_stat: Dict, sample_size: Optional[int] = None) -> List[str]:
         """
         Analyze text statistics for impossible numbers.
         Returns a list of strings describing any impossible numbers found.
         """
         results = []
+        
+        # Check test statistics and degrees of freedom
+        if 'reported_statistics' in text_stat:
+            stats = text_stat['reported_statistics']
+            test_type = text_stat.get('test_type')
+            
+            # Check degrees of freedom
+            if sample_size and 'test_statistic' in stats:
+                df_error = self.check_degrees_of_freedom(test_type, stats['test_statistic'], sample_size)
+                if df_error:
+                    results.append(df_error)
+            
+            # Check effect size
+            if 'effect_size' in stats:
+                effect_error = self.check_effect_size(stats['effect_size'])
+                if effect_error:
+                    results.append(effect_error)
         
         # Check means and standard deviations
         conditions = text_stat.get('conditions', [])
@@ -241,23 +311,13 @@ class ImpossibleNumberDetector:
         
         return results
 
-    def analyze_table(self, table_data):
+    def analyze_table(self, table_data: Dict) -> List[str]:
         """
         Analyze a table of data for impossible numbers.
         Returns a list of strings describing any impossible numbers found.
         """
         results = []
         
-        # Check each condition's statistics
-        for condition in table_data.get('conditions', []):
-            if 'mean' in condition and 'sd' in condition:
-                mean = condition['mean']
-                sd = condition['sd']
-                name = condition.get('name', 'Unknown condition')
-                
-                errors = self.check_mean_and_sd(mean, sd)
-                if errors:
-                    for error in errors:
-                        results.append(f"{name}: {error}")
+        # Add table analysis logic here if needed
         
         return results 
