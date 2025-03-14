@@ -58,18 +58,16 @@ class PaperAnalyzer:
         # System prompt that guides the model's behavior
         self.system_prompt = """You are a statistical data extractor. Your task is to analyze scientific papers and extract statistical data in a structured format.
 
-Please extract the following information:
-1. Sample size (N or n) from the Methods section
-2. Statistical data from tables and text, including:
+Please extract ALL statistical data from tables and text, including:
+   - Sample sizes (N or n) for each analysis (this is critical - each test should have its own sample size)
    - Means and standard deviations
-   - Test statistics (t, F, etc.)
-   - Degrees of freedom
-   - p-values
-   - Effect sizes (Cohen's d, etc.)
+   - Test statistics (t, F, etc.) with their EXACT values and degrees of freedom
+   - p-values EXACTLY as reported (e.g., "p < .05", "p = .032", etc.)
+   - Effect sizes (Cohen's d, η2, etc.) with EXACT values
+   - Any other reported statistical values
 
 Format your response as a JSON object with the following structure:
 {
-  "sample_size": number or null,
   "tables": [
     {
       "table_number": number,
@@ -79,7 +77,7 @@ Format your response as a JSON object with the following structure:
           "row_label": "string",
           "mean": number,
           "sd": number,
-          "n": number (if available)
+          "n": number
         }
       ]
     }
@@ -87,32 +85,39 @@ Format your response as a JSON object with the following structure:
   "text_statistics": [
     {
       "context": "string describing what was compared",
+      "sample_size": number,  # Sample size for this specific analysis
       "conditions": [
         {
           "name": "string",
           "mean": number,
-          "sd": number
+          "sd": number,
+          "n": number  # Sample size for this condition if different from overall
         }
       ],
       "test_type": "string (t-test, F-test, etc.)",
-      "degrees_of_freedom": "string",
-      "test_statistic": number,
-      "p_value": "string",
-      "effect_size": {
-        "type": "string",
-        "value": number
+      "reported_statistics": {  # All statistical values reported for this test
+          "test_statistic": "string",  # e.g., "t(28) = 2.14" - preserve EXACT format
+          "p_value": "string",  # e.g., "p < .05" or "p = .032" - preserve EXACT format
+          "effect_size": "string",  # e.g., "Cohen's d = 0.78" - preserve EXACT format
+          "means": {  # If means are reported
+              "group1": "string",  # e.g., "M = 3.45, SD = 0.67"
+              "group2": "string"   # e.g., "M = 2.98, SD = 0.71"
+          },
+          "additional_stats": {}  # Any other statistics reported
       }
     }
   ]
 }
 
-Important:
-1. Extract ALL statistical comparisons, not just significant ones
-2. Include descriptive context for each comparison
-3. Convert all statistics to numbers (except p-values and df which may be strings)
-4. If a value is not available, omit that field rather than using null
-5. Ensure the JSON is properly formatted and complete
-6. Do not include any text outside the JSON object"""
+Critical Requirements:
+1. Extract and preserve the EXACT format of ALL reported statistics
+2. Include the complete test statistic with degrees of freedom (e.g., "t(28) = 2.14")
+3. Keep p-values in their original format (e.g., "p < .05", "p = .032")
+4. Include means and standard deviations when reported
+5. Each statistical test MUST have its own sample size
+6. Copy values EXACTLY as they appear - do not round or reformat
+7. Include ALL statistical information - even if it seems redundant
+"""
 
     def _get_cache_path(self, pdf_path: str) -> str:
         """Get the cache file path for a given PDF."""
@@ -235,21 +240,9 @@ Important:
         
         # Initialize combined results
         combined = {
-            "sample_size": None,
             "tables": [],
             "text_statistics": []
         }
-        
-        # Track the first non-None sample size
-        for result in results:
-            if not isinstance(result, dict):
-                logging.warning(f"Skipping invalid result (not a dict): {result}")
-                continue
-            
-            # Handle sample size
-            if result.get("sample_size"):
-                combined["sample_size"] = result["sample_size"]
-                break
         
         # Combine tables and text statistics
         for result in results:
@@ -264,7 +257,6 @@ Important:
             if "text_statistics" in result and isinstance(result["text_statistics"], list):
                 combined["text_statistics"].extend(result["text_statistics"])
         
-        logging.info(f"Selected sample size: {combined['sample_size']}")
         logging.info(f"Combined {len(combined['tables'])} tables and {len(combined['text_statistics'])} text statistics from all chunks")
         
         return combined
@@ -351,7 +343,6 @@ Important:
                 
                 result = json.loads(response_text)
                 logger.info(f"Successfully parsed JSON response")
-                logger.debug(f"Found sample size: {result.get('sample_size')}")
                 logger.debug(f"Found {len(result.get('tables', []))} tables")
                 logger.debug(f"Found {len(result.get('text_statistics', []))} text statistics")
                 return result
@@ -376,7 +367,6 @@ Important:
                                         stats_text = stats_text[:i+1]
                                         break
                             partial_result = {
-                                "sample_size": None,
                                 "tables": [],
                                 "text_statistics": json.loads(stats_text)
                             }

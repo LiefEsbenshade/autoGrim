@@ -1,0 +1,168 @@
+Analysis Results for damisch-et-al-2010-keep-your-fingers-crossed-how-superstition-improves-performance.pdf
+================================================================================
+
+Statistical Analysis: t-test
+Context: Performance on a putting task with a ball described as lucky vs. neutral.
+Sample Size (N): 28
+
+Reported Statistics:
+- test_statistic: t(26) = 2.14
+- p_value: p < .05
+- effect_size: Cohen’s d = 0.83
+- means: {}
+- additional_stats: {}
+--------------------------------------------------------------------------------
+
+No impossible numbers found in these statistics.
+--------------------------------------------------------------------------------
+
+Statistical Analysis: F-test
+Context: Time to complete a motor-dexterity task with different starting signals.
+Sample Size (N): 51
+
+Reported Statistics:
+- test_statistic: F(2, 48) = 3.16
+- p_value: p < .05
+- effect_size: None
+- means: {}
+- additional_stats: {}
+--------------------------------------------------------------------------------
+
+No impossible numbers found in these statistics.
+--------------------------------------------------------------------------------
+
+Statistical Analysis: t-test
+Context: Time to complete a motor-dexterity task with a superstitious starting signal vs. a similar non-superstitious signal.
+Sample Size (N): None
+
+Reported Statistics:
+- test_statistic: t(48) = 2.0
+- p_value: p < .05
+- effect_size: Cohen’s d = 0.72
+- means: {}
+- additional_stats: {}
+--------------------------------------------------------------------------------
+
+No impossible numbers found in these statistics.
+--------------------------------------------------------------------------------
+
+Statistical Analysis: t-test
+Context: Time to complete a motor-dexterity task with a superstitious starting signal vs. an ordinary starting signal.
+Sample Size (N): None
+
+Reported Statistics:
+- test_statistic: t(48) = 2.36
+- p_value: p < .03
+- effect_size: Cohen’s d = 0.98
+- means: {}
+- additional_stats: {}
+--------------------------------------------------------------------------------
+
+No impossible numbers found in these statistics.
+--------------------------------------------------------------------------------
+
+Statistical Analysis: t-test
+Context: Performance on a memory game with vs. without a lucky charm.
+Sample Size (N): 41
+
+Reported Statistics:
+- test_statistic: t(39) = 2.13
+- p_value: p < .05
+- effect_size: Cohen’s d = 0.66
+- means: {}
+- additional_stats: {}
+--------------------------------------------------------------------------------
+
+No impossible numbers found in these statistics.
+--------------------------------------------------------------------------------
+
+Statistical Analysis: t-test
+Context: Self-efficacy ratings with vs. without a lucky charm.
+Sample Size (N): None
+
+Reported Statistics:
+- test_statistic: t(39) = 3.07
+- p_value: p < .01
+- effect_size: Cohen’s d = 0.96
+- means: {}
+- additional_stats: {}
+--------------------------------------------------------------------------------
+
+No impossible numbers found in these statistics.
+--------------------------------------------------------------------------------
+
+Statistical Analysis: t-test
+Context: Anxiety ratings with vs. without a lucky charm.
+Sample Size (N): None
+
+Reported Statistics:
+- test_statistic: t(39) = 1.29
+- p_value: p = .20
+- effect_size: n.s.
+- means: {}
+- additional_stats: {}
+--------------------------------------------------------------------------------
+
+No impossible numbers found in these statistics.
+--------------------------------------------------------------------------------
+
+Statistical Analysis: t-test
+Context: Performance on an anagram task with vs. without a lucky charm.
+Sample Size (N): 31
+
+Reported Statistics:
+- test_statistic: t(27) = 2.1
+- p_value: p < .05
+- effect_size: Cohen’s d = 0.77
+- means: {}
+- additional_stats: {}
+--------------------------------------------------------------------------------
+
+No impossible numbers found in these statistics.
+--------------------------------------------------------------------------------
+
+Statistical Analysis: t-test
+Context: Self-efficacy ratings with vs. without a lucky charm.
+Sample Size (N): None
+
+Reported Statistics:
+- test_statistic: t(27) = 2.01
+- p_value: p < .05
+- effect_size: Cohen’s d = 0.75
+- means: {}
+- additional_stats: {}
+--------------------------------------------------------------------------------
+
+No impossible numbers found in these statistics.
+--------------------------------------------------------------------------------
+
+Statistical Analysis: t-test
+Context: Goals set for an anagram task with vs. without a lucky charm.
+Sample Size (N): None
+
+Reported Statistics:
+- test_statistic: t(27) = 2.86
+- p_value: p < .01
+- effect_size: Cohen’s d = 1.11
+- means: {}
+- additional_stats: {}
+--------------------------------------------------------------------------------
+
+No impossible numbers found in these statistics.
+--------------------------------------------------------------------------------
+
+Statistical Analysis: t-test
+Context: Time spent on an anagram task with vs. without a lucky charm.
+Sample Size (N): None
+
+Reported Statistics:
+- test_statistic: t(27) = 2.16
+- p_value: p < .05
+- effect_size: Cohen’s d = 0.83
+- means: {}
+- additional_stats: {}
+--------------------------------------------------------------------------------
+
+No impossible numbers found in these statistics.
+--------------------------------------------------------------------------------
+
