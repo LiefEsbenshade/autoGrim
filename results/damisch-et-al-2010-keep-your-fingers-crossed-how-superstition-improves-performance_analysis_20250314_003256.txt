@@ -1,0 +1,29 @@
+Analysis Results for damisch-et-al-2010-keep-your-fingers-crossed-how-superstition-improves-performance.pdf
+================================================================================
+
+Statistical Analysis: t-test
+Context: Performance on a putting task with a ball described as lucky vs. neutral.
+Sample Size (N): 28
+
+Reported Statistics:
+- test_statistic: t(26) = 2.14
+- p_value: p < .05
+- effect_size: Cohen’s d = 0.83
+- means: {}
+- additional_stats: {}
+--------------------------------------------------------------------------------
+
+No impossible numbers found in these statistics.
+--------------------------------------------------------------------------------
+
+Statistical Analysis: F-test
+Context: Time to complete a motor-dexterity task with different starting signals.
+Sample Size (N): 51
+
+Reported Statistics:
+- test_statistic: F(2, 48) = 3.16
+- p_value: p < .05
+- effect_size: None
+- means: {}
+- additional_stats: {}
+--------------------------------------------------------------------------------

@@ -1,0 +1,210 @@
+{
+  "tables": [
+    {
+      "table_number": 1,
+      "title": "Weights Used to Construct the Synthetic Counterfactual to Ohio. States notlisted had weights less than 0.001. These weights are based on a June 15 registration that excludes all other lottery-adopting states. See Appendix C Table 3for a comparison to our original pre-registered weights",
+      "data": [
+        {
+          "row_label": "CT",
+          "mean": null,
+          "sd": null,
+          "n": null
+        },
+        {
+          "row_label": "GA",
+          "mean": null,
+          "sd": null,
+          "n": null
+        },
+        {
+          "row_label": "HI",
+          "mean": null,
+          "sd": null,
+          "n": null
+        },
+        {
+          "row_label": "IA",
+          "mean": null,
+          "sd": null,
+          "n": null
+        },
+        {
+          "row_label": "KS",
+          "mean": null,
+          "sd": null,
+          "n": null
+        },
+        {
+          "row_label": "PA",
+          "mean": null,
+          "sd": null,
+          "n": null
+        },
+        {
+          "row_label": "VA",
+          "mean": null,
+          "sd": null,
+          "n": null
+        },
+        {
+          "row_label": "WI",
+          "mean": null,
+          "sd": null,
+          "n": null
+        }
+      ]
+    },
+    {
+      "table_number": 2,
+      "title": "Balance Table",
+      "data": []
+    },
+    {
+      "table_number": 3,
+      "title": "Outcome Table",
+      "data": []
+    },
+    {
+      "table_number": 4,
+      "title": "Data Processing and Modeling Choices. Choices indicated with a* represent the pre-registered modeling decisions",
+      "data": []
+    }
+  ],
+  "text_statistics": [
+    {
+      "context": "Comparison of vaccination rates in Ohio at the end of the lottery period.",
+      "sample_size": null,
+      "conditions": [
+        {
+          "name": "Actual Ohio",
+          "mean": 43.7,
+          "sd": null,
+          "n": null
+        },
+        {
+          "name": "Synthetic Ohio",
+          "mean": 45.0,
+          "sd": null,
+          "n": null
+        }
+      ],
+      "test_type": "Permutation test of the mean squared predicted error ratios",
+      "reported_statistics": {
+        "test_statistic": null,
+        "p_value": "0.36",
+        "effect_size": null,
+        "means": {},
+        "additional_stats": {
+          "MSPE-Ratio": "27.0"
+        }
+      }
+    },
+    {
+      "context": "Average mean squared predicted error in the post-treatment period for each model across the permutations in non-treated states",
+      "sample_size": null,
+      "conditions": [],
+      "test_type": null,
+      "reported_statistics": {
+        "test_statistic": null,
+        "p_value": null,
+        "effect_size": null,
+        "means": {
+          "group1": "MSPE = 11.9",
+          "group2": null
+        },
+        "additional_stats": {
+          "median": "median model"
+        }
+      }
+    },
+    {
+      "context": "Average non-treated post-period MSPE",
+      "sample_size": null,
+      "conditions": [],
+      "test_type": null,
+      "reported_statistics": {
+        "test_statistic": null,
+        "p_value": null,
+        "effect_size": null,
+        "means": {
+          "group1": "MSPE = 8.4",
+          "group2": null
+        },
+        "additional_stats": {
+          "percentile": "35th percentile of all the calculated average post-period MSPE values"
+        }
+      }
+    },
+    {
+      "context": "Effect of the lottery on first doses",
+      "sample_size": null,
+      "conditions": [],
+      "test_type": "permutation test",
+      "reported_statistics": {
+        "test_statistic": null,
+        "p_value": "not statistically significant",
+        "effect_size": null,
+        "means": {
+          "group1": "negative effect of \u22120.38 percentage points",
+          "group2": null
+        },
+        "additional_stats": {
+          "best-fitting models": "in the best-fitting models"
+        }
+      }
+    },
+    {
+      "context": "Effect of the lottery on full vaccination rates",
+      "sample_size": null,
+      "conditions": [],
+      "test_type": "permutation test",
+      "reported_statistics": {
+        "test_statistic": null,
+        "p_value": "not statistically significant",
+        "effect_size": null,
+        "means": {
+          "group1": "negative effect of \u22120.54 percentage points",
+          "group2": null
+        },
+        "additional_stats": {
+          "best-fitting models": "in the best-fitting models"
+        }
+      }
+    },
+    {
+      "context": "Effect of the lottery on total doses",
+      "sample_size": null,
+      "conditions": [],
+      "test_type": "permutation test",
+      "reported_statistics": {
+        "test_statistic": null,
+        "p_value": "not statistically significant",
+        "effect_size": null,
+        "means": {
+          "group1": "negative effect of \u22122.66 percentage points",
+          "group2": null
+        },
+        "additional_stats": {
+          "best-fitting models": "in the best-fitting models"
+        }
+      }
+    },
+    {
+      "context": "Effects of the lotteries on vaccination rates",
+      "sample_size": null,
+      "conditions": [],
+      "test_type": null,
+      "reported_statistics": {
+        "test_statistic": null,
+        "p_value": "non-significant",
+        "effect_size": null,
+        "means": {
+          "group1": "modestly positive (1.0%)",
+          "group2": null
+        },
+        "additional_stats": {}
+      }
+    }
+  ],
+  "filename": "did-ohios-vaccine-lottery-increase-vaccination-rates-a-pre-registered-synthetic-control-study.pdf"
+}

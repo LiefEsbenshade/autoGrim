@@ -31,6 +31,29 @@ class ImpossibleNumberDetector:
         For example, 43% with 20 participants is impossible because 20 * 0.43 = 8.6,
         which can't be a whole number.
         """
+        # Check for None values
+        if percentage is None or sample_size is None:
+            return ImpossibleNumberResult(
+                is_impossible=True,
+                explanation=f"Invalid values: percentage={percentage}, sample_size={sample_size}",
+                reported_value=0.0,
+                sample_size=0,
+                type='percentage'
+            )
+            
+        # Convert to numeric types
+        try:
+            percentage = float(percentage)
+            sample_size = int(sample_size)
+        except (TypeError, ValueError):
+            return ImpossibleNumberResult(
+                is_impossible=True,
+                explanation=f"Non-numeric values: percentage={percentage}, sample_size={sample_size}",
+                reported_value=0.0,
+                sample_size=0,
+                type='percentage'
+            )
+        
         if not (0 <= percentage <= 100):
             return ImpossibleNumberResult(
                 is_impossible=True,
@@ -67,6 +90,17 @@ class ImpossibleNumberDetector:
         Returns a list of strings describing any impossible numbers found.
         """
         errors = []
+        
+        # Check for None values
+        if mean is None or sd is None:
+            return [f"Invalid values: mean={mean}, sd={sd}"]
+        
+        # Convert to float to ensure numeric comparisons work
+        try:
+            mean = float(mean)
+            sd = float(sd)
+        except (TypeError, ValueError):
+            return [f"Non-numeric values: mean={mean}, sd={sd}"]
         
         # Check for negative standard deviation
         if sd < 0:
@@ -254,6 +288,9 @@ class ImpossibleNumberDetector:
         Check if the reported effect size is suspiciously large or impossible.
         Returns an error message if suspicious/impossible, None otherwise.
         """
+        if not effect_size_str:
+            return None
+            
         # Extract effect size type and value
         for effect_type, threshold in self.effect_size_thresholds.items():
             if effect_type.lower() in effect_size_str.lower():
@@ -303,11 +340,13 @@ class ImpossibleNumberDetector:
                         results.append(f"{name}: {error}")
         
         # Check for GRIM test failures
-        context = text_stat.get('context', '').lower()
-        is_count_data = any(word in context for word in ['count', 'number of', 'correctly identified', 'solved'])
-        if is_count_data and len(conditions) == 2 and sample_size:
-            grim_errors = self.check_grim_test(conditions, sample_size, is_count_data=True)
-            results.extend(grim_errors)
+        context = text_stat.get('context')
+        if context:  # Only check if context exists and is not None
+            context_lower = context.lower()
+            is_count_data = any(word in context_lower for word in ['count', 'number of', 'correctly identified', 'solved'])
+            if is_count_data and len(conditions) == 2 and sample_size:
+                grim_errors = self.check_grim_test(conditions, sample_size, is_count_data=True)
+                results.extend(grim_errors)
         
         return results
 

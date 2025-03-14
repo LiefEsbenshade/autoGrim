@@ -355,6 +355,29 @@ Critical Requirements:
                             break
                 
                 result = json.loads(response_text)
+                
+                # Ensure all required fields are present with default values
+                if 'text_statistics' in result:
+                    for stat in result['text_statistics']:
+                        # Ensure basic fields exist
+                        stat['test_type'] = stat.get('test_type', 'Unknown')
+                        stat['context'] = stat.get('context', '')
+                        stat['sample_size'] = stat.get('sample_size')
+                        
+                        # Ensure reported_statistics exists and has all fields
+                        if 'reported_statistics' not in stat:
+                            stat['reported_statistics'] = {}
+                        stats = stat['reported_statistics']
+                        stats['test_statistic'] = stats.get('test_statistic', '')
+                        stats['p_value'] = stats.get('p_value', '')
+                        stats['effect_size'] = stats.get('effect_size', '')
+                        stats['means'] = stats.get('means', {})
+                        stats['additional_stats'] = stats.get('additional_stats', {})
+                        
+                        # Ensure conditions exist
+                        if 'conditions' not in stat:
+                            stat['conditions'] = []
+                
                 logger.info(f"Successfully parsed JSON response")
                 logger.debug(f"Found {len(result.get('tables', []))} tables")
                 logger.debug(f"Found {len(result.get('text_statistics', []))} text statistics")
@@ -383,6 +406,21 @@ Critical Requirements:
                                 "tables": [],
                                 "text_statistics": json.loads(stats_text)
                             }
+                            # Ensure fields exist in partial results
+                            for stat in partial_result['text_statistics']:
+                                stat['test_type'] = stat.get('test_type', 'Unknown')
+                                stat['context'] = stat.get('context', '')
+                                stat['sample_size'] = stat.get('sample_size')
+                                if 'reported_statistics' not in stat:
+                                    stat['reported_statistics'] = {}
+                                stats = stat['reported_statistics']
+                                stats['test_statistic'] = stats.get('test_statistic', '')
+                                stats['p_value'] = stats.get('p_value', '')
+                                stats['effect_size'] = stats.get('effect_size', '')
+                                stats['means'] = stats.get('means', {})
+                                stats['additional_stats'] = stats.get('additional_stats', {})
+                                if 'conditions' not in stat:
+                                    stat['conditions'] = []
                             logger.info(f"Successfully parsed partial result with {len(partial_result['text_statistics'])} text statistics")
                             return partial_result
                     except Exception as e2:
